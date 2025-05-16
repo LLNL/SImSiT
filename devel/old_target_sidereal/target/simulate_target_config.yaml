@@ -1,0 +1,33 @@
+branch : Detect Target
+competitor_name: Competitor A
+display_true_name: true
+
+sims:
+  psf_type: Gaussian # only Gaussian allowed for now
+  n_obs: 500 # number of observations to simulate
+  site: BB # site from the telescope list below
+  snr: [10, 50] # range of S/N, distinct for each observation
+  mag: [19.5, 22.5] # constant satellite magnitude
+  position_box: 0.6 # (arcmin) size box side around image center to place satellite
+  n_star: 30 # number of stars per image
+  star_mag: [16, 22] # range of star magnitudes.  If using gaia will filter to this range
+  star_length: [200, 300] # star length range, fixed per observation
+  seed: 929293 # random seed
+  center:  [20, 1] # center of field ra, dec degrees, leave blank for constant pixel scale
+  use_local: True # use local wcs at streak center when simulating stellar streaks
+  use_gaia: False # use gaia catalog 
+  gaia_dir: /p/lustre1/rearmstr/ref_cats/gaia_dr2_20200414/ # location on quartz of gaia catalogs
+
+telescopes:
+  AA:
+    fov: [10, 5] # x,y arcminutes
+    scale: 0.3 # arcsec / pixel
+    r3: 0 # cubic coefficient <= 0 so uses a tan projection
+    psf_size: [2, 5] # fwhm range in arcsecs.  Each observation will choose a different value
+    ZP: 25 # zerpoint for flux determination
+  BB:
+    fov: [30, 30] 
+    scale: 2 
+    r3: 3.e-8 
+    psf_size: [8, 10] 
+    ZP: 25

@@ -1,0 +1,2 @@
+Competitor_A private/sample_submission.yaml 2020-11-13T23:10:16.888951 494 387 494 379 2.4567870065626718e-05 0.15
+Competitor_B private/sample_submission.yaml 2020-11-24T23:10:16.888951 494 425 494 432 2.7568770065626718e-05 0.1

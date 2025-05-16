@@ -1,0 +1,14 @@
+n_obs: 500  # Number of simulated images
+n_demo: 5  # Number of images with solutions given
+fov: [1200, 1024]  # pixels  (half-degree angle implies ~1.75 arcsec / pix)
+seed: 57721
+position_box: 400  # (pixels) box size around image center to place satellite
+star_density: [2.e-5, 2.e-3]  # number per pixel, log uniform
+psf_fwhm: [2, 6]  # minmax in pixels
+star_flux: [1.e+2, 1.e+5]  # log uniform distributed
+streak_flux: [1.0e+4, 1.0e+5]  # uniform distributed
+streak_length: [50, 300]  # pixels.
+noise: 30
+branch: Detect Sidereal
+competitor_name: Competitor A
+display_true_name: true
