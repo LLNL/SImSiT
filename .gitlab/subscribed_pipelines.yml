@@ -1,0 +1,61 @@
+# Trigger pipelines for a variety of jobs and hosts
+variables:
+  LLNL_SLURM_SCHEDULER_PARAMETERS: "-N 1 --userns -p sdadp -A  -t $(( $CI_JOB_TIMEOUT / 60 ))"
+  IMAGE_TAG: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_BRANCH}${CI_COMMIT_SHORT_SHA}
+  IMAGE_TAG_FILENAME: ${CI_PROJECT_NAME}_${CI_COMMIT_BRANCH}${CI_COMMIT_SHORT_SHA}  
+
+ruby_build_image:
+  extends: [.build_image_template]
+  variables:
+    CI_MACHINE: "ruby"
+  tags:
+    - ${CI_MACHINE}
+
+ruby_build_docs_test:
+  extends: [.build_docs_test_template]
+  variables:
+    CI_MACHINE: "ruby"
+  tags:
+    - ${CI_MACHINE}
+  needs:
+    - ruby_build_image
+
+ruby_test_pipeline:
+  extends: [.build_test_pipeline]
+  variables:  
+    CI_MACHINE: "ruby"
+  tags:
+    - ${CI_MACHINE}
+  needs:
+    - ruby_build_image
+
+oslic_publish_docs:
+  extends: [.publish_docs_template]
+  variables:
+      CI_MACHINE: "oslic"
+  tags:
+    - ${CI_MACHINE}
+  dependencies: [ruby_build_docs_test]
+  needs:
+    - ruby_build_docs_test
+
+ruby_publish_image:
+  extends: [.publish_image_template]
+  variables:
+    CI_MACHINE: "ruby"
+  tags:
+    - ${CI_MACHINE}
+  dependencies: [ruby_build_image]
+  needs:
+    - ruby_build_image
+    - ruby_build_docs_test
+
+ruby_image_scanning:
+  extends: [.image_scanning_template]
+  variables:
+    CI_MACHINE: "ruby"
+  tags:
+    - ${CI_MACHINE}
+  dependencies: [ruby_build_image]
+  needs:
+    - ruby_build_image
