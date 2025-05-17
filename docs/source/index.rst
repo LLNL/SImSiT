@@ -20,6 +20,26 @@ processing and the study of satellite behavior under different observational par
    :caption: Contents:
 
 
+Contents
+--------
+
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   installation
+   getting_started.ipynb
+   background
+   tutorials
+   library
+   acknowledgements
+   contributing
+   developer
+   changelog
+   references
+   api
+
+
 
 Indices and tables
 ==================
