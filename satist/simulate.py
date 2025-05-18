@@ -12,7 +12,7 @@ from astropy.time import Time
 from tqdm import tqdm
 import random
 
-import xfiles
+import satist as xfiles
 
 
 def make_image(config, rng, parameters):

@@ -2,7 +2,7 @@ import yaml
 import sys 
 sys.path.insert(1, "./")
 
-from xfiles import simulate
+from satist import simulate
 
 
 if __name__ == "__main__":
