@@ -17,7 +17,7 @@ variables:
   script:
     - . /collab/usr/gapps/lcweg/containers/scripts/enable-podman.sh || echo "enable-podman.sh exit code $?"
     - podman login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - buildah bud --layers -f .docker/Dockerfile -v /etc/pki/ca-trust:/etc/pki/ca-trust:ro -t ${IMAGE_TAG} --build-arg BUILD_DATE=`date +%Y-%m-%d`
+    - podman build -f .docker/Dockerfile -t ${IMAGE_TAG} --build-arg BUILD_DATE=`date +%Y-%m-%d`
     - podman tag ${IMAGE_TAG} ${CI_REGISTRY_IMAGE}:latest
     - podman save ${IMAGE_TAG} > .docker/${IMAGE_TAG_FILENAME}.tar
   artifacts:
