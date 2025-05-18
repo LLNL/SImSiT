@@ -1,6 +1,6 @@
 # Trigger pipelines for a variety of jobs and hosts
 variables:
-  LLNL_SLURM_SCHEDULER_PARAMETERS: "-N 1 --userns -p sdadp -A  -t $(( $CI_JOB_TIMEOUT / 60 ))"
+  LLNL_SLURM_SCHEDULER_PARAMETERS: "-N 1 --userns -p sdadp -A -t 60"
   IMAGE_TAG: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_BRANCH}${CI_COMMIT_SHORT_SHA}
   IMAGE_TAG_FILENAME: ${CI_PROJECT_NAME}_${CI_COMMIT_BRANCH}${CI_COMMIT_SHORT_SHA}  
 
