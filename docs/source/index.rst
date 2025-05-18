@@ -28,10 +28,9 @@ Contents
    :maxdepth: 1
 
    installation
-   getting_started.ipynb
+   getting_started
    background
    tutorials
-   library
    acknowledgements
    contributing
    developer
