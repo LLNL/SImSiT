@@ -28,7 +28,7 @@ Contents
    :maxdepth: 1
 
    installation
-   getting_started
+   gettingstarted
    background
    tutorials
    acknowledgements
