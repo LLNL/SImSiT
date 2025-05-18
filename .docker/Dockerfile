@@ -7,7 +7,7 @@ FROM wci-repo.llnl.gov:4567/almalinux:9.5
 #RUN pip install -U pip
 
 RUN dnf -y update -x ca-certificates && \
-    dnf install -y cmake git git-lfs openjpeg2 python3-pip wget python3-setuptools 
+    dnf install -y gcc gcc-c++ cmake git git-lfs openjpeg2 python3-pip wget python3-setuptools 
 
 
 RUN wget -c http://www.fftw.org/fftw-3.3.10.tar.gz -O - | tar -xz
