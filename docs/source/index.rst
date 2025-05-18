@@ -20,6 +20,23 @@ processing and the study of satellite behavior under different observational par
    :caption: Contents:
 
 
+.. figure:: example_satist_out.png
+
+   Example of simulated image output of SatIST. Left: Example image taken with sidereal (star) tracking - 
+   fast moving statillite appears as a streak across the image. Right: Example image take with satillite 
+   tracking - the stars appear as streaks and the statlite appears as a point source. 
+
+.. note:: Finding your way around
+
+   A good place to get started is with the installation guide, getting started page and
+   the the tutorial examples.
+
+   If you are here to develop on SatIST, please head over to the contributing guide.
+
+   If you have issues with the software or need support please open a `github issue <https://github.com/LLNL/satist/issues>`_.
+
+
+
 Contents
 --------
 
