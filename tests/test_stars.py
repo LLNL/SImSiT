@@ -1,12 +1,10 @@
 import numpy as np
-
 import galsim
-
-import xfiles.tools
+import satist.tools
 
 
 def test_mock_star_catalog():
-    catalog = xfiles.catalog.MockStarCatalog()
+    catalog = satist.catalog.MockStarCatalog()
     rng = np.random.default_rng(57721)
     for _ in range(10):
         z = rng.uniform(-1, 1)

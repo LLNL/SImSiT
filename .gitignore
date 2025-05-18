@@ -2,3 +2,5 @@ docs/build/*
 */.DS_Store
 .devcontainer/*
 .DS_Store
+*/__pycache__/*
+__pycache__/*

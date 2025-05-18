@@ -2,13 +2,13 @@ import numpy as np
 from astropy.time import Time, TimeDelta
 import astropy.units as u
 import ssapy
-import xfiles
+import satist
 
 
 def test_simple_cadence():
     exptime = 1.3*u.s
     delay = 11.1*u.s
-    cadence = xfiles.SimpleCadence(exptime, delay)
+    cadence = satist.SimpleCadence(exptime, delay)
 
     rng = np.random.default_rng(1234)
     t0 = Time("2010-01-01T00:00:00")

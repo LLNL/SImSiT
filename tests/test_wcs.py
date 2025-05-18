@@ -5,8 +5,8 @@ import galsim
 from astropy.time import Time
 import astropy.units as u
 
-from xfiles.tracker import InertialTracker, transform_wcs
-from xfiles.wcs import radialWCS
+from satist.tracker import InertialTracker, transform_wcs
+from satist.wcs import radialWCS
 
 dtext = """
 distortion:  # plate-scale (arcsec/micron) vs field angle (deg)
