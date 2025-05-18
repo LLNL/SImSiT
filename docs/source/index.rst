@@ -1,8 +1,3 @@
-.. SatIST documentation master file, created by
-   sphinx-quickstart on Sat May 17 19:02:41 2025.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to SatIST's documentation!
 ==================================
 
@@ -22,9 +17,9 @@ processing and the study of satellite behavior under different observational par
 
 .. figure:: example_satist_out.png
 
-   Example of simulated image output of SatIST. Left: Example image taken with sidereal (star) tracking - 
-   fast moving statillite appears as a streak across the image. Right: Example image take with satillite 
-   tracking - the stars appear as streaks and the statlite appears as a point source. 
+   Example of simulated image output from SatIST. Left: An example image taken with sidereal (star) tracking, 
+   where the fast-moving satellite appears as a streak across the image. Right: An example image taken with 
+   satellite tracking, where the stars appear as streaks, and the satellite appears as a point source.
 
 .. note:: Finding your way around
 
@@ -34,7 +29,6 @@ processing and the study of satellite behavior under different observational par
    If you are here to develop on SatIST, please head over to the contributing guide.
 
    If you have issues with the software or need support please open a `github issue <https://github.com/LLNL/satist/issues>`_.
-
 
 
 Contents

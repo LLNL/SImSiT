@@ -127,7 +127,7 @@ This means you can push changes to GitHub where they can be saved before you
 are ready for a pull request. Now you can make your changes and additions to the
 code and push changes to GitHub.
 
-4. Next go to to the Blast GitHub repository page and go to the pull requests tab.
+4. Next go to to the SatIST GitHub repository page and go to the pull requests tab.
 Then open a new draft pull request.
 
 5. Create a pull request with your branch and main.
