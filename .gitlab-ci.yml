@@ -17,7 +17,6 @@ variables:
   script:
     - . /collab/usr/gapps/lcweg/containers/scripts/enable-podman.sh || echo "enable-podman.sh exit code $?"
     - podman login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
-    - podman pull czregistry.llnl.gov:5050/decsup/ppadl:latest
     - buildah bud --layers -f .docker/Dockerfile -v /etc/pki/ca-trust:/etc/pki/ca-trust:ro -t ${IMAGE_TAG} --build-arg BUILD_DATE=`date +%Y-%m-%d`
     - podman tag ${IMAGE_TAG} ${CI_REGISTRY_IMAGE}:latest
     - podman save ${IMAGE_TAG} > .docker/${IMAGE_TAG_FILENAME}.tar
@@ -34,7 +33,7 @@ variables:
   script:
     - . /collab/usr/gapps/lcweg/containers/scripts/enable-podman.sh || echo "enable-podman.sh exit code $?"
     - podman load --input .docker/${IMAGE_TAG_FILENAME}.tar
-    - podman run -i -v /etc/pki/ca-trust:/etc/pki/ca-trust:ro -v .:/ecoa-generator ${IMAGE_TAG} -c "cd docs && make html"
+    - podman run -i -v /etc/pki/ca-trust:/etc/pki/ca-trust:ro -v .:/satist ${IMAGE_TAG} -c "cd docs && make html"
   artifacts:
     paths:
       - docs/_build/html/
@@ -69,7 +68,7 @@ variables:
   script:
     - . /collab/usr/gapps/lcweg/containers/scripts/enable-podman.sh || echo "enable-podman.sh exit code $?"
     - podman load --input .docker/${IMAGE_TAG_FILENAME}.tar
-    - podman run -i -v /etc/pki/ca-trust:/etc/pki/ca-trust:ro -v .:/ecoa-generator ${IMAGE_TAG} -c "python3 ecoa-generator.py examples/Elevation_ROI_n34.0w78.0_n36.0w76.0.png examples/Potential_ROI_n34.0w78.0_n36.0w76.0.hdf5 examples/ppadl.toml examples/NC_user_config_arrows.toml config/ecoa-generator.toml output"
+    - podman run -i -v /etc/pki/ca-trust:/etc/pki/ca-trust:ro -v .:/satist ${IMAGE_TAG} -c "python3"
 
 .image_scanning_template:
   stage: scan_image
