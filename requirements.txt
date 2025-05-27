@@ -70,3 +70,4 @@ zipp==3.6.0
 llnl-ssapy
 sphinx_rtd_theme
 pytest
+spextra
