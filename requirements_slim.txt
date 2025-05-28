@@ -1,0 +1,12 @@
+galsim
+astropy
+astroplan
+pyyaml
+lsst-sphgeom
+llnl-ssapy
+spextra
+sphinx_rtd_theme
+pytest
+numpy   
+scipy
+scikit-learn
