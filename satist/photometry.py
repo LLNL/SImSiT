@@ -1,8 +1,14 @@
 """
-Functions to transform fluxes and mangituedes between Gaia and different photometric systems.
+Functions to transform fluxes and mangituedes between different photometric systems.
 
 See: https://gea.esac.esa.int/archive/documentation/GDR2/Data_processing/chap_cu5pho/sec_cu5pho_calibr/ssec_cu5pho_PhotTransf.html#Ch5.F11
 """
+
+#import spextre
+from astroquery.gaia import Gaia
+import astropy.units as u
+from astropy.coordinates import SkyCoord
+import numpy as np 
 
 def convert_gaia_magnitude(gaia_g, gaia_bp, gaia_rp, target_filter='2MASS_Ks'):
     """
@@ -30,3 +36,78 @@ def convert_gaia_magnitude(gaia_g, gaia_bp, gaia_rp, target_filter='2MASS_Ks'):
     bp_minus_rp = gaia_bp - gaia_rp
     coeffs = coeff_dict[target_filter]
     return coeffs[0] + coeffs[1] * bp_minus_rp + coeffs[2] * (bp_minus_rp**2)
+
+
+def spectrum_to_magnitude():
+    return True
+
+
+
+
+def get_gaia_sources(ra_deg, dec_deg, radius_deg, gaia_data_release=3, star_lim=-1):
+    """
+    Get all gaia sources  within a circle centered on ra_deg, dec_deg with
+    radius radaius deg.
+
+    Args:
+        ra_deg (float): Right ascension in degress on the ICRF.
+        ded_deg (float): Declination in degrees on the ICRF.
+        radius_deg (float): Radius in degrees of the region to search.
+        gaia_data_release (int): Gaia data release to be used (2 or 3),
+        star_lim (int): Limit number of stars to be returned default -1 means no
+        limit.
+    Returns:
+        results (astropy.Table): results of query that contain the gaia colum names.
+    """
+    Gaia.ROW_LIMIT = star_lim
+    Gaia.MAIN_GAIA_TABLE = f"gaiadr{gaia_data_release}.gaia_source"
+
+    coord = SkyCoord(ra=ra_deg, dec=dec_deg, unit=(u.degree, u.degree), frame='icrs')
+    query = Gaia.cone_search_async(coord, radius=u.Quantity(radius_deg, u.deg))
+    results = query.get_results()
+    return results
+
+
+def get_gaia_magnitude_histogram(gaia_data_release=3, star_lim=-1, nbins=100):
+    """
+    Get Histrogram of Gaia Mangnitudes in G, BP and RP.
+
+    Args:
+        gaia_data_release (int): Gaia data release to be used (2 or 3),
+        star_lim (int): Limit number of stars to be returned default -1 means no
+        limit.
+        filter: (str): Gaia photometric filter either G, BP, or RP
+        nbins (int): Number of bins in the magnitude histogram.
+    Returns:
+
+    """
+    catalog = get_gaia_sources(10, 10, 1, gaia_data_release=3, star_lim=-1)
+    gaia_filters = ['g', 'bp', 'rp']
+
+    results = {}
+
+    for filter in gaia_filters: 
+        magnitude_dist = catalog[f'phot_{filter}_mean_mag'].data
+        magnitude_dist = magnitude_dist[~np.isnan(magnitude_dist)]
+        min_mag, max_mag = np.min(magnitude_dist), np.max(magnitude_dist)
+        bins = np.linspace(min_mag, max_mag, num=nbins)
+        values, _ = np.histogram(magnitude_dist, bins=bins)
+        results[filter] = {}
+        results[filter]['bins'] = bins
+        results[filter]['values'] = values 
+
+    return results 
+
+
+
+
+results = get_gaia_magnitude_histogram(10,10,2)
+print(results)
+
+
+
+
+
+
+
+
