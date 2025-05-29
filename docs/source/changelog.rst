@@ -2,7 +2,21 @@
 Change Log
 ==========
 
-**(Current version) v3.0 updates**
+
+**v3.1 updates**
+-----------------
+
+- Containerized for development
+- Fixed bugs related to outdated versions of dependencies (astropy and ssapy). 
+- Made pip installable
+- Unit tests written
+- Documentation written
+- Developer workflow documented for open-sourcing
+- Short Wave Infrared (SWIR) functionality added to build realistic astronomy scenes in the 2MASS band passes.
+- General utility functions added to deal with arbitrary SWIR bands. 
+
+
+**v3.0 updates**
 ----------------------------------
 
 - Added the ``sidereal_track`` branch
