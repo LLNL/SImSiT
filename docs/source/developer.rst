@@ -6,7 +6,7 @@ In order to help develop popclass, the library should be installed from source.
 
 .. code-block:: console
 
-    git clone https://github.com/LLNL/satist.git
+    git clone https://github.com/LLNL/simsit.git
 
 Working in the Dev Container
 ----------------------------
@@ -19,11 +19,11 @@ To build the container:
 .. code-block:: console
 
     cd popclass
-    docker build ./ -t satist:latest
+    docker build ./ -t simsit:latest
 
 This will build the Docker image.
 To check that it has built correctly, run the test suite:
 
 .. code-block:: console
 
-    docker run -it -v "./:/popclass" satist:latest bash -c "cd satist/ && pytest -v"
+    docker run -it -v "./:/simsit" simsit:latest bash -c "cd simsit/ && pytest -v"
