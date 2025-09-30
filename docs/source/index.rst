@@ -1,7 +1,7 @@
-Welcome to SatIST's documentation!
+Welcome to SImSiT's documentation!
 ==================================
 
-The Satellite Image Simulation Toolkit (SatIST) is a python software package designed 
+The Satellite Image Simulation Toolkit (SImSiT) is a python software package designed 
 to generate diverse and realistic satellite imaging scenarios. It serves as a toolkit 
 for simulating data that supports the development and testing of algorithms used in 
 satellite detection, calibration, and characterization. SatIST provides a suite of 
