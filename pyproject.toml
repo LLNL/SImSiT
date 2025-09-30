@@ -20,8 +20,8 @@ classifiers = [
 dependencies = ["scipy", "numpy", "matplotlib", "scikit-learn", "galsim", "astropy", "astroplan", "llnl-ssapy", "pytest", "astroquery", "lsst-sphgeom", "pyyaml", "sphinx_rtd_theme", "spextra"]
 
 [project.urls]
-Homepage = ""
+Homepage = "https://github.com/LLNL/SImSiT"
 Documentation = ""
-Repository = ""
+Repository = "https://github.com/LLNL/SImSiT"
 Issues = ""
 Changelog = ""
