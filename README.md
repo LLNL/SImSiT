@@ -4,7 +4,7 @@
 
 The Satellite Image Simulation Toolkit (SImSiT) is a Python software package designed 
 to generate diverse and realistic satellite imaging scenarios. SImSiT is built on top 
-of GalSim [@Rowe2015] and SSAPy [@SSAPy2023;@Yeager2023] and serves as a toolkit for 
+of [GalSim](https://github.com/GalSim-developers/GalSim) and [SSAPy](https://github.com/LLNL/SSAPy) and serves as a toolkit for 
 simulating imaging data that supports the development and testing of algorithms for 
 satellite detection, calibration, and characterization.
 
