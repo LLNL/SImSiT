@@ -7,7 +7,7 @@ import astropy.units as u
 import lsst.sphgeom as sphgeom
 from astropy.table import Table, vstack
 from ssapy.utils import catalog_to_apparent
-
+from .photometry import get_gaia_magnitude_histogram, vega_to_ab_offset
 
 def _coord_to_UV3d(coord):
     return sphgeom.UnitVector3d(*coord.get_xyz())
@@ -121,6 +121,10 @@ class MockStarCatalog(StarCatalog):
         self.bins = np.linspace(10, 21, 111)
         self.density = np.sum(self.imag_hist) / 0.102219849198379 # N / sr
 
+        self.magnitude_hists = get_gaia_magnitude_histogram()
+       
+
+
     def _get_trixel_stars(self, idx, time):
         # Generate random deterministic star catalog anywhere on the sky on the
         # fly.
@@ -166,6 +170,19 @@ class MockStarCatalog(StarCatalog):
         )
         i_mag = self.bins[indices] + rng.uniform(0, 0.1, size=N)
         table['i_mag'] = i_mag[w]
+
+        for gaia_filter in self.magnitude_hists:
+        
+            mag_hist = self.magnitude_hists[gaia_filter]['values']
+            bins = self.magnitude_hists[gaia_filter]['bins']
+            indices = rng.choice(
+                len(mag_hist),
+                p=mag_hist/np.sum(mag_hist),
+                size=N
+            )
+            mag = bins[indices] + rng.uniform(0, 0.1, size=N)
+            table[f'{filter}_mag'] = mag[w] + vega_to_ab_offset(gaia_filter)
+
 
         table['ra'] = np.rad2deg(table['ra_rad'])
         table['dec'] = np.rad2deg(table['dec_rad'])

@@ -1,6 +1,6 @@
 import yaml
 import sys 
-sys.path.insert(1, "./")
+#sys.path.insert(1, "./")
 
 from satist import simulate
 

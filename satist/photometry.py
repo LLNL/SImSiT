@@ -42,8 +42,6 @@ def spectrum_to_magnitude():
     return True
 
 
-
-
 def get_gaia_sources(ra_deg, dec_deg, radius_deg, gaia_data_release=3, star_lim=-1):
     """
     Get all gaia sources  within a circle centered on ra_deg, dec_deg with
@@ -83,7 +81,6 @@ def get_gaia_magnitude_histogram(gaia_data_release=3, star_lim=-1, nbins=100):
     """
     catalog = get_gaia_sources(10, 10, 1, gaia_data_release=3, star_lim=-1)
     gaia_filters = ['g', 'bp', 'rp']
-
     results = {}
 
     for filter in gaia_filters: 
@@ -92,17 +89,34 @@ def get_gaia_magnitude_histogram(gaia_data_release=3, star_lim=-1, nbins=100):
         min_mag, max_mag = np.min(magnitude_dist), np.max(magnitude_dist)
         bins = np.linspace(min_mag, max_mag, num=nbins)
         values, _ = np.histogram(magnitude_dist, bins=bins)
-        results[filter] = {}
-        results[filter]['bins'] = bins
-        results[filter]['values'] = values 
+        results[filter.upper()] = {}
+        results[filter.upper()]['bins'] = bins
+        results[filter.upper()]['values'] = values 
 
     return results 
 
 
+def vega_to_ab_offset(filter_name):
+    """
+    Vega to AB magnitude system offset terms.
+    For 2MASS See: https://www.astronomy.ohio-state.edu/martini.10/usefuldata.html
+    For Gaia See: https://gea.esac.esa.int/archive/documentation/GDR2/Data_processing/chap_cu5pho/sec_cu5pho_calibr/ssec_cu5pho_calibr_extern.html
+    Table 5.2 and 5.3.
 
+    Args:
+        filter_name (str): name of filter to get magnitude offset for.
+    Returns:
+        offset (float): magnitude offset (add this to VEGA to get AB)
+    """
 
-results = get_gaia_magnitude_histogram(10,10,2)
-print(results)
+    offsets = {'2MASS_Ks': 1.85,
+                '2MASS_H': 1.39,
+                '2MASS_J': 0.91,
+                'G': 0.105, 
+                'BP': 0.0292,  
+                'RP': 0.3542}
+    
+    return offsets[filter_name]
 
 
 
