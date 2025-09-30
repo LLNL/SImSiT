@@ -1,66 +1,27 @@
-># **Overview**
-This package contains simulation scripts to create a variety of challenge data sets designed to test the robustness and accuracy of algorithms relevant to satellite detection, calibration, and characterization.
+# SImSiT
 
-# **Installation**
+[![Documentation Status](https://readthedocs.org/projects/popclass/badge/?version=latest)](https://simsit.readthedocs.io/en/latest/?badge=latest)
 
-- Install ssapy
-- Install lsst_sphgeom
-- run: `pip install -r requirements.txt`
-- run: `python setup.py install`
+The Satellite Image Simulation Toolkit (SImSiT) is a Python software package designed 
+to generate diverse and realistic satellite imaging scenarios. SImSiT is built on top 
+of GalSim [@Rowe2015] and SSAPy [@SSAPy2023;@Yeager2023] and serves as a toolkit for 
+simulating imaging data that supports the development and testing of algorithms for 
+satellite detection, calibration, and characterization.
 
-# **Simulation**
+For more details on the project including the installation, contributing, and the getting started guide see the [documentation](https://simsit.readthedocs.io).
 
-**To simulate the sidereal branch:**
-    
-- edit `config/sidereal.yaml`
-    - (For full simulation: n_obs = 1010, n_demo = 10, develop=False)
-- run: `python scripts/simulate.py config/sidereal.yaml`
-- This will create a folder with all simulated data under `branches/tracking/sidereal`
+![image info](./docs/source/example_satist_out.png)
 
-**To simulate the target branch:**
-    
-- edit `config/target.yaml`
-    - (For full simulation: n_obs = 1010, n_demo = 10, develop=False)
-- run: `python scripts/simulate.py config/target.yaml`
-- This will create a folder with all simulated data under `branches/tracking/target`
-- To simulate target tracking images with no satellite, run `python scripts/simulate.py config/empty_target.yaml`
+Example of simulated image output from SatIST of satellites in low-Earth orbit observed in the optical i-band filter using a ground-based sensor:
+Left: An example image taken with sidereal (star) tracking, where the fast-moving satellite appears as a streak across the image.
+Right: An example image taken with satellite tracking, where the stars appear as streaks, and the satellite appears as a point source.
 
-**To simulate the IOD branch:**
-    
-- NOTE: To simulate this branch you must download `ODJobs_Simulated_Data_20001_20005_v2/` from the eSTM Teams page (found under General/Files/) and place it in the `branches/iod/` directory
-- run: `python scripts/simulate_iod.py`
-- This will create a folder with all simulated data under `branches/iod`
-- (See `branches/iod/README_private.md` for more info)
+## License
 
-**To simulate the track images branches:**
+popclass is distributed under the terms of the MIT license. All new contributions must be made under the MIT license.
 
-- run: `python scripts/simulate_tracks.py`
-    - (For full simulation pass `--nsat 105`)
-    
-- Sidereal tracking:
-    - run: `python scripts/simulate_track_images.py --config config/sidereal_track.yaml branches/track_images/track_obs/sat-obs-*.fits`
-        - (For full simulation pass `--stride 12`)
-        - To run as the non-tracking branch, run with `--nobs=1` (this simulates just one image per satellite)
-    - This will create a folder with all simulated data under `branches/track_images/sidereal_track`
-- Target tracking:
-    - run: `python scripts/simulate_track_images.py --config config/target_track.yaml branches/track_images/track_obs/sat-obs-*.fits`
-        - (For full simulation pass `--stride 12`)
-    - This will create a folder with all simulated data under `branches/track_images/target_track`
+See Link to [license](https://github.com/LLNL/simsit/blob/main/LICENSE) and [NOTICE](https://github.com/LLNL/simsit/blob/main/NOTICE) for details.
 
-**After all simulations are complete:**
+SPDX-License-Identifier: MIT
 
-- Check data: `python tests/check_data.py config/[config_file] [num_sats]`
-- Package data: `./package_data.sh`
-
-# **Information**
-
-- A dashboard with competitor scores for each branch is located at https://xfiles.llnl.gov.
-- Current slides reside on the eSTM Teams page (found under General/Files/Presentations/xfiles_v[X.X].pptx)
-- To request an account or provide feedback, please email xfiles@llnl.gov
-- For a detailed list of what changed between data versions, please consult `change_log.md`
-
-#### **Errors:**
-
-- If there is a gcc error when installing `lsst_sphgeom`:
-    - Install using `CC=/usr/tce/packages/gcc/gcc-8.1.0/bin/gcc python -m pip install git+https://github.com/lsst/sphgeom`
-    - Everytime you run `simulate.py` include `LD_PRELOAD=/usr/tce/packages/gcc/gcc-8.1.0/lib64/libstdc++.so.6` before 
+LLNL-CODE-2009738
