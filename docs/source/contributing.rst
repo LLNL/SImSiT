@@ -2,7 +2,7 @@
 Contributing
 ============
 
-**We need your help** This section walks you through how to become a SatIST developer.
+**We need your help** This section walks you through how to become a SImSiT developer.
 We want your help. No, really. There may be a little voice inside your head that
 is telling you that you're not ready to be an open source contributor; that your
 skills aren't nearly good enough to contribute. What could you possibly offer a
@@ -102,11 +102,11 @@ has been approved and your changes have been merged you can delete your branch.
 
 Starting from scratch, the typical development workflow would be the following.
 
-1. Clone the SatIST Git repository
+1. Clone the SImSiT Git repository
 
 .. code:: none
 
-    git clone https://github.com/LLNL/SatIST.git
+    git clone https://github.com/LLNL/SImSiT.git
 
 2. Create your own branch with the following naming convention.
 
@@ -127,7 +127,7 @@ This means you can push changes to GitHub where they can be saved before you
 are ready for a pull request. Now you can make your changes and additions to the
 code and push changes to GitHub.
 
-4. Next go to to the SatIST GitHub repository page and go to the pull requests tab.
+4. Next go to to the SImSiT GitHub repository page and go to the pull requests tab.
 Then open a new draft pull request.
 
 5. Create a pull request with your branch and main.
@@ -171,7 +171,7 @@ Dockerfile acordinginly.
 **What to work on?**
 
 So you’ve read the developer guide, now you want to know what exactly to
-work on. The best place to start is the `issues tab <https://github.com/LLNL/SatIST/issues>`_
+work on. The best place to start is the `issues tab <https://github.com/LLNL/SImSiT/issues>`_
 on the popclass GitHub page. Here you will find a list of tasks
 that need to be worked on for popclass. If you find a bug or would
 like to request a feature please open a new issue.
