@@ -5,9 +5,23 @@ Acknowledgements
 Contributors
 ============
 
-The project contributors are:
+The project contributors in no particular order are:
 
-  
+Joshua Meyers
+Dan Merl
+Kerianne Pruett
+Michael Schneider
+Alexx Perloff
+Eddie Schlafly
+Nathan Golovich
+Denvir Higgins
+Travis Yeager
+Gregory Sallaberry
+Robert Armstrong
+Peter McGill
+Mathew Beilejeski
+Amanda Muyskens
+
 For a complete list current contributor see Github.
 
 Funding
