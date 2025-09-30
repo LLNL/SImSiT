@@ -31,7 +31,7 @@ of the ground-based Vera C. Rubin Observatory's LSSTCam (e.g.,:cite:t:`Peng2013`
 The community has also built more general software tools that can simulate detailed telescope designs 
 using ray-tracing methods—PhoSim (:cite:t:`Peterson2015`) —and generate general astronomical scenes, for example, 
 GalSim (:cite:t:`@Rowe2015`) and SkyMaker (:cite:t:`Bertin2009`). Moreover, software packages that model detailed observational 
-characteristics of satellites have also been developed :cite:t:`Fankhauser2023`. However, no software packages that 
+characteristics of satellites have also been developed (:cite:t:`Fankhauser2023`). However, no software packages that 
 combine general image simulations of satellites with realistic orbits currently exist—SImSiT fills this gap.
 
 With the advent of large astronomical imaging surveys such as LSST :cite:t:`Ivezi2019` and The Zwicky Transient 
