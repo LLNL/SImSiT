@@ -2,6 +2,7 @@
 Change Log
 ==========
 
+For an current change log please see the Github releases. 
 
 **v3.1 updates**
 -----------------
