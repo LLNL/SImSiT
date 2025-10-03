@@ -13,6 +13,7 @@ html_static_path = ['_static']
 extensions = [
     'sphinx_rtd_theme',
     "sphinxcontrib.bibtex",
+    'sphinx_automodapi.automodapi',
 ]
 
 bibtex_bibfiles = ["refs.bib"]

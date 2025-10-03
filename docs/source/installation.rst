@@ -9,7 +9,7 @@ The recommended way to install SImSiT is using `pip <https://pip.pypa.io/en/stab
     pip install simsit
 
 The conda-forge install is built from the pypi index and takes a couple of days to
-be available after a new popclass version is released.
+be available after a new version is released.
 
 To install from source
 

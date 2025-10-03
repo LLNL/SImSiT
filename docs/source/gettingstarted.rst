@@ -2,7 +2,7 @@
 Getting Started
 ===============
 
-This page shows a user how to genreate simluated images with satillies using SatIST.
+This page shows a user how to genreate simluated images with satillies using SImSiT.
 
 Simulation
 ==========

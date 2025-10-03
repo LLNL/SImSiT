@@ -46,6 +46,7 @@ Contents
    developer
    changelog
    references
+   api
 
 Indices and tables
 ==================

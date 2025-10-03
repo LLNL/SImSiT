@@ -1,3 +1,7 @@
+"""
+Star catalog interfaces for optical observations of satellites.
+"""
+
 import os
 from abc import ABC, abstractmethod
 
@@ -10,10 +14,36 @@ from ssapy.utils import catalog_to_apparent
 from .photometry import get_gaia_magnitude_histogram, vega_to_ab_offset
 
 def _coord_to_UV3d(coord):
+    """Convert a coordinate to an LSST spherical geometry UnitVector3d.
+    
+    Parameters
+    ----------
+    coord : galsim.CelestialCoord
+        Coordinate to convert
+        
+    Returns
+    -------
+    sphgeom.UnitVector3d
+        Unit vector representation of the coordinate
+    """
     return sphgeom.UnitVector3d(*coord.get_xyz())
 
 
 def _circle_to_poly(circle, nvertex=100):
+    """Convert a spherical circle to a convex polygon approximation.
+    
+    Parameters
+    ----------
+    circle : sphgeom.Circle
+        Spherical circle to convert
+    nvertex : int, optional
+        Number of vertices to use for polygon approximation (default: 100)
+        
+    Returns
+    -------
+    sphgeom.ConvexPolygon
+        Polygon approximation of the circle
+    """
     center = circle.getCenter()
     # Start with point towards the east and `opening-angle` away.
     point = center.rotatedAround(
@@ -30,11 +60,19 @@ def _circle_to_poly(circle, nvertex=100):
 
 
 class StarCatalog(ABC):
+    """Abstract base class for star catalogs using HTM pixelization.
+    
+    Parameters
+    ----------
+    level : int, optional
+        HTM pixelization level (default: 7)
+    """
     def __init__(self, level=7):
         self.htm = sphgeom.HtmPixelization(level)
 
     def get_stars(self, coord0, coord1, radius, time):
-        """
+        """Get stars within a field of view, accounting for motion during exposure.
+        
         Parameters
         ----------
         coord0, coord1 : galsim.CelestialCoord
@@ -78,6 +116,20 @@ class StarCatalog(ABC):
 
     @abstractmethod
     def _get_trixel_stars(self, idx, time):
+        """Get stars from a single HTM trixel.
+        
+        Parameters
+        ----------
+        idx : int
+            HTM trixel index
+        time : astropy.time.Time
+            Time of observation
+            
+        Returns
+        -------
+        astropy.table.Table
+            Table of stars in the trixel
+        """
         pass
 
 
@@ -87,10 +139,10 @@ class MockStarCatalog(StarCatalog):
 
     Parameters
     ----------
-    level : int
-        HTM level for pixelization
-    seed : int
-        Random seed for initialization
+    level : int, optional
+        HTM level for pixelization (default: 7)
+    seed : int, optional
+        Random seed for initialization (default: 123)
 
     Notes
     -----
@@ -124,8 +176,31 @@ class MockStarCatalog(StarCatalog):
         self.magnitude_hists = get_gaia_magnitude_histogram()
        
 
-
     def _get_trixel_stars(self, idx, time):
+        """Generate mock stars for a given HTM trixel.
+        
+        Generates a deterministic random star catalog based on the trixel index
+        and seed. Stars are uniformly distributed within the trixel with magnitudes
+        sampled from GAIA magnitude histograms.
+        
+        Parameters
+        ----------
+        idx : int
+            HTM trixel index
+        time : astropy.time.Time
+            Time of observation (unused in mock catalog)
+            
+        Returns
+        -------
+        astropy.table.Table
+            Table with columns:
+                - ra_rad : RA in radians
+                - dec_rad : Dec in radians
+                - ra : RA in degrees
+                - dec : Dec in degrees
+                - i_mag : i-band magnitude
+                - {filter}_mag : Magnitude in GAIA filters
+        """
         # Generate random deterministic star catalog anywhere on the sky on the
         # fly.
         trixel = self.htm.triangle(idx)
@@ -191,33 +266,46 @@ class MockStarCatalog(StarCatalog):
 
 
 class GaiaStarCatalog(StarCatalog):
-    """Get star catalog from GAIA and convert from ICRF to apparent
-    (accounting for proper motion, parallax, and aberration).
+    """Get star catalog from GAIA and convert from ICRF to apparent coordinates.
+    
+    Reads GAIA catalog data from HTM-pixelized FITS files and transforms
+    coordinates to apparent positions accounting for proper motion, parallax,
+    and aberration.
 
     Parameters
     ----------
     gaia_dir : str
-        Directory of Gaia catalog trixels.
-    coord0, coord1 : galsim.CelestialCoord
-        Endpoints for field-of-view center at beginning/end of exposure.
-    radius : galsim.Angle
-        Field of view radius
-    time : astropy.time.Time
-        Time of observation (to account for proper motion, parallax, aberration)
-
-    Returns
-    -------
-    stars : astropy.table.Table
-        Table with columns
-            - ra
-            - dec
-            - i_mag
+        Directory containing GAIA catalog trixel FITS files (named {idx}.fits)
+    level : int, optional
+        HTM pixelization level (default: 7)
     """
     def __init__(self, gaia_dir, level=7):
         super().__init__(level=level)
         self.gaia_dir = gaia_dir
 
     def _get_trixel_stars(self, idx, time):
+        """Load and transform GAIA stars from a single HTM trixel.
+        
+        Reads GAIA catalog data from disk and applies proper motion, parallax,
+        and aberration corrections to transform from ICRF to apparent coordinates.
+        
+        Parameters
+        ----------
+        idx : int
+            HTM trixel index
+        time : astropy.time.Time
+            Time of observation for coordinate transformations
+            
+        Returns
+        -------
+        astropy.table.Table
+            Table with columns:
+                - ra_rad : Apparent RA in radians
+                - dec_rad : Apparent Dec in radians
+                - ra : Apparent RA in degrees
+                - dec : Apparent Dec in degrees
+                - i_mag : i-band magnitude (currently G-band flux)
+        """
         file = os.path.join(self.gaia_dir, f"{idx}.fits")
         gaia_data = Table.read(file)
         table = Table()

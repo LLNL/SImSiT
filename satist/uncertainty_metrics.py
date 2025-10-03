@@ -18,19 +18,22 @@ import scipy.stats
 
 
 def chi2(dx, covar):
-    """Given residuals and a covariance matrix, compute chi^2
+    """Compute chi-squared statistic given residuals and covariance matrices.
+    
+    Calculates chi^2 = dx^T * C^-1 * dx for each residual vector and
+    corresponding covariance matrix.
     
     Parameters
     ----------
-    dx : array_like(n, m), float
-        n residual vectors
-    covar : array_like(n, m, m), float
-        n (m by m) covariance matrices
+    dx : array_like(n, m) or (m,), float
+        n residual vectors of dimension m, or single residual vector
+    covar : array_like(n, m, m) or (m, m), float
+        n covariance matrices (m by m), or single covariance matrix
         
     Returns
     -------
-    chi2 : array_like(n), float
-        array of chi^2
+    chi2 : array_like(n) or float
+        Array of chi-squared values, or single value if scalar inputs
     """
     if len(covar.shape) == 2 and len(dx.shape) == 1:
         scalar = True
@@ -48,22 +51,34 @@ def chi2(dx, covar):
 
 
 def cvm_chi2_test(chi2, ndof, alpha=False):
-    """Return Cramer-Mises test statistic for chi2 ~ chi2(ndof).
+    """Perform Cramér-von Mises test for chi-squared distribution fit.
+    
+    Tests whether the provided chi-squared values follow a chi-squared
+    distribution with the specified degrees of freedom using the
+    Cramér-von Mises criterion, a goodness-of-fit test based on the
+    empirical distribution function.
     
     Parameters
     ----------
     chi2 : array_like(n), float
-        chi2 values
+        Chi-squared values to test
     ndof : int
-        number of degrees of freedom
-    alpha : bool
-        if True, convert test statistic to rough probability of
-        distributions being the same.
+        Number of degrees of freedom for the reference chi-squared distribution
+    alpha : bool, optional
+        If True, convert test statistic to approximate p-value
+        (probability of obtaining this statistic if the null hypothesis is true).
+        Default is False.
 
     Returns
     -------
     ts : float
-        Cramer-Mises test statistic for chi2 ~ chi2(ndof).
+        Cramér-von Mises test statistic. Larger values indicate worse fit.
+        If alpha=True, returns approximate p-value instead.
+        
+    Notes
+    -----
+    The Cramér-von Mises test is more sensitive to differences in the middle
+    of the distribution compared to the Kolmogorov-Smirnov test.
     """
     chi2 = np.asarray(chi2)
     chi2 = chi2[np.argsort(chi2)]
@@ -78,26 +93,40 @@ def cvm_chi2_test(chi2, ndof, alpha=False):
 
 
 def cvm_to_alpha(ts, n):
-    """Convert Cramer-von Mises test statistic to a probability.
-
-    Table 4.2 of M. A. Stephens (1986). "Tests Based on EDF Statistics". 
-    In D'Agostino, R.B.; Stephens, M.A. (eds.). Goodness-of-Fit Techniques
-    Values for alpha > 0.25 are mostly intended to be illustrative.
+    """Convert Cramér-von Mises test statistic to approximate p-value.
+    
+    Uses the asymptotic critical values from Stephens (1986) with a
+    correction for finite sample sizes to estimate the p-value.
 
     Parameters
     ----------
     ts : float
-        Cramer-von Mises test statistic
-    
+        Cramér-von Mises test statistic
     n : int
-        Number of points used in computing the test statistic.
+        Number of data points used in computing the test statistic.
         Must be >= 5.
 
     Returns
     -------
     alpha : float
-        The probability that the test statistic is this large or larger,
-        given that the data were drawn from the chosen distribution.
+        Approximate p-value: the probability of obtaining a test statistic
+        this large or larger if the data were drawn from the reference
+        distribution. Values closer to 1 indicate good fit, values closer
+        to 0 indicate poor fit.
+        
+    Notes
+    -----
+    Based on Table 4.2 from:
+    M. A. Stephens (1986). "Tests Based on EDF Statistics". 
+    In D'Agostino, R.B.; Stephens, M.A. (eds.). Goodness-of-Fit Techniques
+    
+    Values for alpha > 0.25 are mostly intended to be illustrative and
+    should be interpreted with caution.
+    
+    Raises
+    ------
+    ValueError
+        If n < 5
     """
     if n < 5:
         raise ValueError('n must be >= 5')
@@ -115,6 +144,39 @@ def cvm_to_alpha(ts, n):
 
 
 def pearsons_chi(chi2, ndof, nbin):
+    """Perform binned Pearson's chi-squared goodness-of-fit test.
+    
+    Bins the chi-squared values and compares observed bin counts to expected
+    uniform distribution across quantiles of the reference chi-squared
+    distribution. Returns normalized residuals for each bin.
+    
+    Parameters
+    ----------
+    chi2 : array_like(n), float
+        Chi-squared values to test
+    ndof : int
+        Number of degrees of freedom for the reference chi-squared distribution
+    nbin : int
+        Number of bins to use for the test
+        
+    Returns
+    -------
+    normalized_residuals : array_like(nbin), float
+        Normalized residuals (observed - expected) / sqrt(expected) for each bin.
+        Under the null hypothesis, these should follow approximately a
+        standard normal distribution. Large positive values indicate excess
+        observations in that bin, large negative values indicate deficit.
+        
+    Notes
+    -----
+    The bins are chosen to have equal probability under the reference
+    chi-squared distribution (equiprobable binning). This is appropriate
+    for testing whether the observed distribution matches the expected
+    chi-squared distribution.
+    
+    The test assumes Poisson statistics in each bin, so the expected count
+    in each bin is len(chi2)/nbin with standard deviation sqrt(len(chi2)/nbin).
+    """
     edges = np.linspace(0, 1, nbin+1)
     cuts = np.concatenate([[-np.inf], 
                            scipy.stats.chi2.ppf(edges[1:-1], ndof), [np.inf]])

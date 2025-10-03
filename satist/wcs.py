@@ -1,3 +1,7 @@
+"""
+World Coordinate System (WCS) generation with radial optical distortion.
+"""
+
 import galsim
 import numpy as np
 

@@ -1,3 +1,7 @@
+"""
+Generate synthetic telescope observations with stars and satellites.
+"""
+
 import os
 
 import astroplan
@@ -16,6 +20,60 @@ import satist as xfiles
 
 
 def make_image(config, rng, parameters):
+    """Generate a single simulated telescope image with stars and satellites.
+    
+    Creates a synthetic image including star field, satellite streaks, realistic
+    noise, and vignetting. Generates both the challenge image with perturbed WCS
+    and truth data including accurate positions and magnitudes.
+    
+    Parameters
+    ----------
+    config : dict
+        Configuration dictionary containing:
+            - n_sat : int
+                Number of satellites per image
+            - catalog : dict
+                Catalog configuration with fields:
+                    - develop : bool (optional)
+                        Use mock catalog if True
+                    - gaia_dir : str
+                        Directory of GAIA data
+                    - min_snr : float
+                        Minimum SNR for stars to include
+            - sat : dict
+                Satellite configuration
+            - tracker : dict
+                Tracker configuration
+    rng : numpy.random.Generator
+        Random number generator
+    parameters : dict
+        Observation parameters containing:
+            - observer : ssapy.EarthObserver
+            - t0 : astropy.time.Time
+            - instrument : Instrument
+            - exptime : float
+            - orbit : list of ssapy.Orbit
+            - tracker : Tracker
+            - zp : float
+            - sat_mag : list of float
+            - sky_sb : float
+            - psf_fwhm : float
+            - i_obs : int
+            - propagator : ssapy.Propagator
+    
+    Returns
+    -------
+    hdu : astropy.io.fits.PrimaryHDU
+        FITS HDU containing challenge image with perturbed WCS
+    hduTrueWCS : astropy.io.fits.PrimaryHDU
+        FITS HDU with true WCS at start of exposure
+    hduTrueWCST : astropy.io.fits.PrimaryHDU
+        FITS HDU with true WCS at end of exposure
+    sample_docs : dict
+        Sample submission format with perturbed positions and fluxes
+    truth_hdulist : list
+        List of FITS HDUs containing true satellite and star catalogs
+    """
     observer = parameters['observer']
     t0 = parameters['t0']
     instrument = parameters['instrument']
@@ -249,6 +307,62 @@ def make_image(config, rng, parameters):
 
 
 def simulate(config):
+    """Run full simulation to generate synthetic telescope observations.
+    
+    Generates a dataset of simulated telescope images with stars and satellites,
+    including both public challenge data (with perturbed WCS) and private truth
+    data. Each observation varies in observing conditions, telescope pointing,
+    and satellite configurations.
+    
+    Parameters
+    ----------
+    config : dict
+        Configuration dictionary containing:
+            - outdir : str
+                Output directory for generated files
+            - instrument : dict
+                Instrument configuration
+            - n_obs : int
+                Number of observations to generate
+            - n_demo : int
+                Number of demo observations to include in public data
+            - seed : int
+                Random seed for reproducibility
+            - cadence : dict
+                Observation cadence with 'exptime' list
+            - sites : list
+                List of observing site names
+            - conditions : dict
+                Observing conditions ranges:
+                    - psf_fwhm_range : tuple
+                    - sky_range : tuple
+                    - zp_range : tuple
+            - sat : dict
+                Satellite configuration with 'mag_range'
+            - n_sat : int
+                Number of satellites per image (1 or 2)
+            - tracker : dict
+                Tracker configuration
+            - catalog : dict
+                Star catalog configuration
+            - meta : dict
+                Metadata to include in output
+    
+    Notes
+    -----
+    Creates the following directory structure:
+        outdir/
+            public/
+                ####.fits (challenge images)
+                sample_submission_N.yaml (demo sample)
+                truth_N.fits (demo truth catalog)
+                sky_flat.fits (optional, via make_sky_flat)
+            private/
+                ####.wcs.fits (true WCS at t0)
+                ####.wcst.fits (true WCS at t1)
+                sample_submission.yaml (complete truth)
+                truth.fits (complete truth catalog)
+    """
     for d in ["public", "private"]:
         dir_ = os.path.join(config['outdir'], d)
         if not os.path.exists(dir_):
@@ -465,8 +579,31 @@ def simulate(config):
 
 
 def make_sky_flat(configfile):
-    """
-    Generates a median sky flat .fits file
+    """Generate a median sky flat field calibration image.
+    
+    Creates a normalized flat field by computing the median of multiple images
+    from the dataset. Uses up to 1000 randomly sampled images to create a robust
+    flat field correction.
+    
+    Parameters
+    ----------
+    configfile : str
+        Path to YAML configuration file containing:
+            - outdir : str
+                Output directory containing public data
+            - meta : dict
+                Metadata with 'branch' field
+            - instrument : dict
+                Instrument config with 'image_shape'
+    
+    Notes
+    -----
+    The output flat field is normalized such that:
+        1. Each pixel is divided by the median of its flattened image
+        2. The median across all images is computed
+        3. Final normalization to mean = 1.0
+    
+    Output is written to: {outdir}/public/sky_flat.fits
     """
     config = yaml.safe_load(open(configfile, 'r'))
     data_path = os.path.join(config['outdir'], 'public')
@@ -495,4 +632,3 @@ def make_sky_flat(configfile):
 
     hdu = fits.PrimaryHDU(sky_flat)
     hdu.writeto(os.path.join(config['outdir'], "public", "sky_flat.fits"), overwrite=True)
-
