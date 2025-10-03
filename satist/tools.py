@@ -1,3 +1,7 @@
+"""
+Utility functions for telescope observation simulation and image generation.
+"""
+
 import contextlib
 import sys
 
