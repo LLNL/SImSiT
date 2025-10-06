@@ -68,12 +68,12 @@ for other behaviors that they deem inappropriate, threatening,
 offensive, or harmful.
 
 **Scope** This Code of Conduct applies both within project spaces and in public spaces
-when an individual is representing the popclass project or its community.
+when an individual is representing the SImSiT project or its community.
 Examples of representing the project or community include using an official
 project e-mail address, posting via an official social media account, or
 acting as an appointed representative at an online or offline event.
 Representation of the project may be further defined and clarified by
-popclass maintainers.
+SImSiT maintainers.
 
 **Enforcement** Instances of abusive, harassing, or otherwise unacceptable behavior may
 be reported by contacting the LLNL GitHub Admins at github-admin@llnl.gov. The project
@@ -95,7 +95,7 @@ determined by other members of the project or organization's leadership.
 Developer workflow
 ------------------
 
-To add or change code on popclass we use Git and GitHub. The normal develop
+To add or change code on SImSiT we use Git and GitHub. The normal develop
 workflow is to branch off main, commit and push changes, and then merge
 into the main branch with a pull request. Finally, after the pull request
 has been approved and your changes have been merged you can delete your branch.
@@ -140,7 +140,7 @@ in the draft pull request. On every commit some checks will be performed on
 your code.
 
 The Continuous integration test checks if any of the code you changed failed
-any of the popclass tests. All checks must pass for your code changes if
+any of the SImSiT tests. All checks must pass for your code changes if
 you want them to be accepted!
 
 When you are a happy for you changes to be reviewed
@@ -172,6 +172,6 @@ Dockerfile acordinginly.
 
 So you’ve read the developer guide, now you want to know what exactly to
 work on. The best place to start is the `issues tab <https://github.com/LLNL/SImSiT/issues>`_
-on the popclass GitHub page. Here you will find a list of tasks
-that need to be worked on for popclass. If you find a bug or would
+on the SImSiT GitHub page. Here you will find a list of tasks
+that need to be worked on for SImSiT. If you find a bug or would
 like to request a feature please open a new issue.

@@ -25,3 +25,6 @@ Documentation = ""
 Repository = "https://github.com/LLNL/SImSiT"
 Issues = ""
 Changelog = ""
+
+[tool.hatch.build.targets.wheel]
+packages = ["satist"]

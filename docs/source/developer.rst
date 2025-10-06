@@ -2,7 +2,7 @@
 Developer Guide
 ===============
 
-In order to help develop popclass, the library should be installed from source.
+In order to help develop SImSiT, the library should be installed from source.
 
 .. code-block:: console
 
@@ -18,7 +18,7 @@ To build the container:
 
 .. code-block:: console
 
-    cd popclass
+    cd satist
     docker build ./ -t simsit:latest
 
 This will build the Docker image.
