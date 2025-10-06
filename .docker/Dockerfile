@@ -14,6 +14,7 @@ RUN dnf -y update -x ca-certificates && \
 RUN wget -c http://www.fftw.org/fftw-3.3.10.tar.gz -O - | tar -xz
 RUN cd fftw-3.3.10 && ./configure && make && make install && make check
 RUN ln -s /usr/lib/aarch64-linux-gnu/libfftw3.so.3 /usr/local/lib/libfftw3.so
+RUN pip install pybind11
 
 COPY ./requirements.txt /requirements.txt
 RUN pip install -r requirements.txt
