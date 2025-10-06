@@ -1,4 +1,5 @@
-FROM wci-repo.llnl.gov:4567/almalinux:9.5
+# FROM wci-repo.llnl.gov:4567/almalinux:9.5
+FROM almalinux:9.5
 
 #RUN apt-get -y install git
 #RUN apt-get install python3-pip -y
