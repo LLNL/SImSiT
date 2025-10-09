@@ -14,6 +14,8 @@ extensions = [
     'sphinx_rtd_theme',
     "sphinxcontrib.bibtex",
     'sphinx_automodapi.automodapi',
+    'sphinx.ext.inheritance_diagram',
+    'sphinx.ext.graphviz',
 ]
 
 bibtex_bibfiles = ["refs.bib"]
