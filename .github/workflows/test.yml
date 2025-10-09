@@ -5,6 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   tests:
@@ -13,11 +14,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build Docker Image
-        run: docker build -f .docker/Dockerfile -t simsit
+        run: docker build -f .docker/Dockerfile -t simsit .
       - name: Tests
         run: |
           ci_env=`bash <(curl -s https://codecov.io/env)`
-          docker run -v .:/satist/ $ci_env -e CI=true simsit bash -c "cd /satist && pytest -v --cov --cov-report=xml"
+          docker run -v .:/satist/ $ci_env -e CI=true simsit bash -c "cd /satist && pip install -e . && pytest -v --cov --cov-report=xml"
       - name: Upload coverage reports to Codecov with GitHub Action
         uses: codecov/codecov-action@v4.2.0
         env:

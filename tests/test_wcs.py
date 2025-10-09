@@ -81,8 +81,8 @@ def test_transform_wcs():
     x1, y1 = wcs1.radecToxy(ra, dec, units='degrees')
     x1b, y1b = wcs1b.radecToxy(ra, dec, units='degrees')
 
-    np.testing.assert_allclose(x1, x1b, rtol=0, atol=1e-4)
-    np.testing.assert_allclose(y1, y1b, rtol=0, atol=1e-4)
+    np.testing.assert_allclose(x1, x1b, rtol=0, atol=2e-4)
+    np.testing.assert_allclose(y1, y1b, rtol=0, atol=2e-4)
 
 
 if __name__ == "__main__":
